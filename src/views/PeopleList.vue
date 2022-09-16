@@ -20,10 +20,20 @@
           <peopleItem :people="people" :index="index" @delete="deletePeople" />
         </tr>
         <tr>
-          <td colspan="6" class="text-center py-4" v-if="peoples.length === 0 && search === ''">Tidak ada data</td>
+          <td colspan="6" class="text-center py-10" v-if="loading">
+            <div class="flex items-center justify-center ">
+              <div class="w-16 h-16 border-b-2 border-gray-900 rounded-full animate-spin"></div>
+            </div>
+          </td>
         </tr>
         <tr>
-          <td v-if="search !== '' && filteredPeople.length === 0" colspan="6" class="text-center py-4">Tidak ada data</td>
+          <td colspan="6" class="text-center py-4" v-if="error.status">{{ error.message }}</td>
+        </tr>
+        <tr>
+          <td colspan="6" class="text-center py-4" v-if="peoples.length === 0 && search === '' && !error.status && !loading">Tidak ada data</td>
+        </tr>
+        <tr>
+          <td v-if="search !== '' && filteredPeople.length === 0 && !error.status && !loading" colspan="6" class="text-center py-4">Tidak ada data</td>
         </tr>
       </tbody>
     </table>
@@ -43,7 +53,12 @@ export default {
     return {
       peoples: [],
       filteredPeople: [],
-      search: ''
+      search: '',
+      loading: false,
+      error: {
+        status: false,
+        message: ''
+      }
     }
   },
   methods: {
@@ -55,8 +70,18 @@ export default {
       })
     },
     async getPeoples () {
-      const res = await fetch('api/peoples')
-      return res.json()
+      this.loading = true
+      try {
+        const res = await fetch('api/peoples')
+        this.loading = false
+        return res.json()
+      } catch (err) {
+        this.error = {
+          status: true,
+          message: 'Gagal melakukan request ke server'
+        }
+        this.loading = false
+      }
     },
     async deletePeople (e) {
       if (confirm('Are you sure?')) {

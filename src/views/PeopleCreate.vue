@@ -1,5 +1,8 @@
 <template>
-  <section class="bg-white p-4 mt-6 rounded-lg">
+  <div class="py-10" v-if="loading">
+    <loader-spinner-component />
+  </div>
+  <section class="bg-white p-4 mt-6 rounded-lg" v-if="!loading && !error.status">
     <form class="flex justify-between text-sm flex-col lg:flex-row" @submit="submitForm">
       <div class="outer-left w-[100%] lg:w-[48%]">
         <input-text-component label="Nama" placeholder="Masukkan nama" v-model="form.nama" :readOnly="readOnly" />
@@ -45,12 +48,14 @@ import InputTextComponent from '@/components/InputTextComponent'
 import InputTextTrueNumber from '@/components/InputTextTrueNumber'
 import InputFileComponent from '@/components/InputFileImageComponent'
 import InputTextAreaComponent from '@/components/InputTextAreaComponent'
+import LoaderSpinnerComponent from '@/components/LoaderSpinnerComponent'
 
 export default {
   name: 'PeopleCreate',
-  components: { InputTextAreaComponent, InputFileComponent, InputTextTrueNumber, InputTextComponent, InputSelectComponent },
+  components: { LoaderSpinnerComponent, InputTextAreaComponent, InputFileComponent, InputTextTrueNumber, InputTextComponent, InputSelectComponent },
   data () {
     return {
+      loading: false,
       readOnly: false,
       provinces: [],
       province: null,
@@ -59,6 +64,10 @@ export default {
       districts: [],
       district: null,
       villages: [],
+      error: {
+        status: false,
+        message: ''
+      },
       genders: [
         { id: 1, name: 'Laki-laki' },
         { id: 2, name: 'Perempuan' }
@@ -143,6 +152,7 @@ export default {
     },
     async submitForm (e) {
       e.preventDefault()
+      this.loading = true
       try {
         const timeout = Math.floor(Math.random() * 2000) + 1
         if (timeout > 1500) {
@@ -157,6 +167,11 @@ export default {
         this.$router.push({ name: 'home' })
       } catch (err) {
         console.log(err)
+        this.loading = false
+        this.error = {
+          status: true,
+          message: err.message
+        }
         Swal.fire({
           icon: 'error',
           title: 'Oops...',
@@ -185,8 +200,18 @@ export default {
       return response.json()
     },
     async getPeople (id) {
-      const res = await fetch(`/api/peoples/${id}`)
-      return res.json()
+      this.loading = true
+      try {
+        const res = await fetch(`/api/peoples/${id}`)
+        this.loading = false
+        return res.json()
+      } catch (err) {
+        this.loading = false
+        this.error = {
+          status: true,
+          message: err.message
+        }
+      }
     },
     async getProvincies () {
       const { data } = await axios.get('provinces.json')
