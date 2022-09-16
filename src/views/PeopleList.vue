@@ -68,7 +68,7 @@ export default {
     }
   },
   async created () {
-    this.peoples = []
+    this.peoples = await this.getPeoples()
   }
 }
 </script>
