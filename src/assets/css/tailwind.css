@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    /* Compenent Main */
+    .main {
+        @apply min-h-[100vh] w-[100%] flex justify-center
+    }
+
+    .article {
+        @apply w-[90%] lg:w-[80%]
+    }
+
+    /* End Component Main */
+
+    .form-group {
+        @apply mb-4 w-[100%]
+    }
+
+    .form-label {
+        @apply block mb-2
+    }
+
+    .form-control {
+        @apply w-[100%] p-2 border-2 rounded-lg focus:outline-none focus:outline-0 focus:border-blue-500 mb-2
+    }
+
+    .form-control[readonly], .form-control[disabled] {
+        @apply bg-blue-200 cursor-not-allowed border-blue-200
+    }
+
+    .double-form-group {
+        @apply flex justify-between
+    }
+
+    /*  All Button   */
+    .btn-save {
+        @apply bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-700 w-[100%] mb-3 mr-0 lg:mr-3 focus:outline-none focus:outline-0 focus:border-blue-500
+    }
+
+    .btn-reset {
+        @apply border-2 w-[100%] py-2 rounded-lg hover:bg-gray-200 mb-3 ml-0 lg:ml-3 focus:outline-none focus:border-blue-500
+    }
+}
