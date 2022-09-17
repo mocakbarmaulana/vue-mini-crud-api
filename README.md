@@ -1,4 +1,4 @@
-# kominfo-bandung-test
+# Vue Mini CRUD API
 
 ## Project setup
 ```
