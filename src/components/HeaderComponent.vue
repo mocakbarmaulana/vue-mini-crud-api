@@ -1,6 +1,6 @@
 <template>
 <header>
-  <routedr-link to="/" class="text-2xl">Bantuan Social 2022</routedr-link>
+  <router-link to="/" class="text-2xl">Bantuan Social 2022</router-link>
 </header>
 </template>
 

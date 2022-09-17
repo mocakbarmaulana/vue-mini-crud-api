@@ -72,7 +72,7 @@ export default {
     async getPeoples () {
       this.loading = true
       try {
-        const res = await fetch('api/peoples')
+        const res = await fetch('https://akbar-fake-server.herokuapp.com/peoples')
         this.loading = false
         return res.json()
       } catch (err) {
@@ -85,7 +85,7 @@ export default {
     },
     async deletePeople (e) {
       if (confirm('Are you sure?')) {
-        await fetch('api/peoples/' + e, {
+        await fetch('https://akbar-fake-server.herokuapp.com/peoples/' + e, {
           method: 'DELETE'
         })
         this.peoples = this.peoples.filter(people => people.id !== e)

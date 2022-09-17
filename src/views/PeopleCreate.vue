@@ -176,11 +176,16 @@ export default {
           icon: 'error',
           title: 'Oops...',
           text: 'Something went wrong!'
+        }).then(() => {
+          this.error = {
+            status: false,
+            message: ''
+          }
         })
       }
     },
     async createPeople (data) {
-      const response = await fetch('/api/peoples', {
+      const response = await fetch('https://akbar-fake-server.herokuapp.com/peoples', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -190,7 +195,7 @@ export default {
       return response.json()
     },
     async updatePeople (data, id) {
-      const response = await fetch(`/api/peoples/${id}`, {
+      const response = await fetch(`https://akbar-fake-server.herokuapp.com/peoples/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json'
@@ -202,7 +207,7 @@ export default {
     async getPeople (id) {
       this.loading = true
       try {
-        const res = await fetch(`/api/peoples/${id}`)
+        const res = await fetch(`https://akbar-fake-server.herokuapp.com/peoples/${id}`)
         this.loading = false
         return res.json()
       } catch (err) {
@@ -214,19 +219,19 @@ export default {
       }
     },
     async getProvincies () {
-      const { data } = await axios.get('provinces.json')
+      const { data } = await axios.get('/api/provinces.json')
       return data
     },
     async getRegencies (id) {
-      const { data } = await axios.get(`regencies/${id}.json`)
+      const { data } = await axios.get(`/api/regencies/${id}.json`)
       return data
     },
     async getDistricts (id) {
-      const { data } = await axios.get(`districts/${id}.json`)
+      const { data } = await axios.get(`/api/districts/${id}.json`)
       return data
     },
     async getVillages (id) {
-      const { data } = await axios.get(`villages/${id}.json`)
+      const { data } = await axios.get(`/api/villages/${id}.json`)
       return data
     }
   },
